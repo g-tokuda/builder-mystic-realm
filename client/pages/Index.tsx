@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import RandomShapes from "../components/RandomShapes";
 
 const HeroSection = () => {
   return (
