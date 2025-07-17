@@ -7,10 +7,10 @@ const HeroSection = () => {
       <div className="absolute inset-0 grid-techno opacity-30"></div>
 
       {/* Geometric Shapes */}
-      <div className="absolute top-20 left-10 w-4 h-4 bg-foreground shape-diamond"></div>
-      <div className="absolute top-40 right-20 w-6 h-6 border-2 border-foreground"></div>
-      <div className="absolute bottom-40 left-1/4 w-8 h-8 bg-foreground transform rotate-45"></div>
-      <div className="absolute bottom-20 right-1/3 w-3 h-3 bg-foreground rounded-full"></div>
+      <div className="absolute top-20 left-10 w-4 h-4 bg-foreground shape-diamond animate-pulse"></div>
+      <div className="absolute top-40 right-20 w-6 h-6 border-2 border-foreground animate-bounce"></div>
+      <div className="absolute bottom-40 left-1/4 w-8 h-8 bg-foreground transform rotate-45 hover:rotate-90 transition-transform duration-500"></div>
+      <div className="absolute bottom-20 right-1/3 w-3 h-3 bg-foreground rounded-full animate-ping"></div>
 
       {/* Main Content */}
       <div className="container-techno text-center z-10">
