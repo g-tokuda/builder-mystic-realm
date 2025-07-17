@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden">
+    <section className="relative h-screen flex items-center justify-center bg-background overflow-hidden">
       {/* Grid Background */}
       <div className="absolute inset-0 grid-techno opacity-30"></div>
 
