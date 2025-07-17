@@ -1,91 +1,95 @@
 import { useEffect, useState } from "react";
 
 interface Shape {
-  id: number;
+  id: string;
   type: "square" | "diamond" | "circle";
   x: number;
   y: number;
   size: number;
   opacity: number;
   rotation: number;
+  isVisible: boolean;
 }
 
 export default function RandomShapes() {
   const [shapes, setShapes] = useState<Shape[]>([]);
-  const [nextId, setNextId] = useState(0);
 
-  // Add new shape at random position
-  const addShape = () => {
+  const createShape = (): Shape => {
     const types: Shape["type"][] = ["square", "diamond", "circle"];
-    const newShape: Shape = {
-      id: nextId,
+    return {
+      id: `shape-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       type: types[Math.floor(Math.random() * types.length)],
-      x: Math.random() * 100, // 0-100% of container width
-      y: Math.random() * 100, // 0-100% of container height
-      size: Math.random() * 20 + 8, // 8-28px
+      x: Math.random() * 90 + 5, // 5-95% to avoid edges
+      y: Math.random() * 90 + 5, // 5-95% to avoid edges
+      size: Math.random() * 12 + 6, // 6-18px (smaller sizes)
       opacity: 0,
       rotation: Math.random() * 360,
+      isVisible: false,
     };
+  };
 
-    setShapes((prev) => [...prev, newShape]);
-    setNextId((prev) => prev + 1);
+  const addShape = () => {
+    const newShape = createShape();
 
-    // Fade in the shape
+    setShapes((prev) => {
+      // Limit to maximum 3 shapes at once
+      if (prev.length >= 3) {
+        return prev;
+      }
+      return [...prev, newShape];
+    });
+
+    // Smart animation sequence
     setTimeout(() => {
       setShapes((prev) =>
         prev.map((shape) =>
-          shape.id === newShape.id ? { ...shape, opacity: 1 } : shape,
+          shape.id === newShape.id
+            ? { ...shape, isVisible: true, opacity: 0.8 }
+            : shape,
         ),
       );
     }, 100);
 
-    // Fade out and remove the shape after random duration
-    const duration = Math.random() * 3000 + 2000; // 2-5 seconds
+    // Remove after 4-6 seconds with fade out
+    const lifespan = Math.random() * 2000 + 4000; // 4-6 seconds
     setTimeout(() => {
       setShapes((prev) =>
         prev.map((shape) =>
-          shape.id === newShape.id ? { ...shape, opacity: 0 } : shape,
+          shape.id === newShape.id
+            ? { ...shape, isVisible: false, opacity: 0 }
+            : shape,
         ),
       );
 
-      // Remove from array after fade out
+      // Remove from array after animation
       setTimeout(() => {
         setShapes((prev) => prev.filter((shape) => shape.id !== newShape.id));
-      }, 500);
-    }, duration);
+      }, 800);
+    }, lifespan);
   };
 
   useEffect(() => {
-    // Add initial shapes
-    const initialShapes = Math.floor(Math.random() * 3) + 2; // 2-4 initial shapes
-    for (let i = 0; i < initialShapes; i++) {
-      setTimeout(() => addShape(), i * 500);
-    }
+    // Add first shape immediately
+    setTimeout(addShape, 500);
 
-    // Continuously add new shapes
-    const interval = setInterval(
-      () => {
-        // Only add if we don't have too many shapes
-        if (shapes.length < 8) {
-          addShape();
-        }
-      },
-      Math.random() * 2000 + 1000,
-    ); // Every 1-3 seconds
+    // Then add shapes at longer intervals
+    const interval = setInterval(() => {
+      addShape();
+    }, 6000); // Every 6 seconds
 
     return () => clearInterval(interval);
-  }, [shapes.length, nextId]);
+  }, []);
 
   const getShapeClasses = (shape: Shape) => {
-    const baseClasses = `absolute transition-all duration-500 bg-foreground`;
+    const baseClasses = `absolute transition-all duration-700 ease-out`;
 
     switch (shape.type) {
       case "square":
-        return `${baseClasses} border-2 border-foreground bg-transparent`;
+        return `${baseClasses} border border-foreground bg-transparent`;
       case "diamond":
-        return `${baseClasses} transform rotate-45`;
+        return `${baseClasses} bg-foreground`;
       case "circle":
-        return `${baseClasses} rounded-full`;
+        return `${baseClasses} bg-foreground rounded-full`;
       default:
         return baseClasses;
     }
@@ -105,8 +109,9 @@ export default function RandomShapes() {
             opacity: shape.opacity,
             transform:
               shape.type === "diamond"
-                ? `rotate(${shape.rotation}deg)`
-                : `rotate(${shape.rotation}deg)`,
+                ? `rotate(45deg) scale(${shape.isVisible ? 1 : 0.5})`
+                : `rotate(${shape.rotation}deg) scale(${shape.isVisible ? 1 : 0.5})`,
+            transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         />
       ))}
