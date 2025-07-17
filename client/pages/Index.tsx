@@ -251,12 +251,12 @@ const NewsletterSection = () => {
 
 export default function Index() {
   return (
-    <div className="min-h-screen">
+    <>
       <HeroSection />
       <BrandStorySection />
       <ProductCategoriesSection />
       <FeaturedSection />
       <NewsletterSection />
-    </div>
+    </>
   );
 }
