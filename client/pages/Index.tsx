@@ -149,7 +149,7 @@ const ProductCategoriesSection = () => {
           {categories.map((category, index) => (
             <div
               key={category.name}
-              className="group bg-background p-8 md:p-12 border-2 border-transparent hover:border-foreground transition-all duration-300 cursor-pointer"
+              className="group bg-background p-8 md:p-12 border-2 border-transparent hover:border-foreground hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer"
             >
               <div className="space-y-6">
                 <div className="flex justify-between items-start">
