@@ -13,7 +13,7 @@ const HeroSection = () => {
       <div className="absolute bottom-20 right-1/3 w-3 h-3 bg-foreground rounded-full animate-ping"></div>
 
       {/* Main Content */}
-      <div className="container-techno text-center z-10">
+      <div className="container-techno text-center z-10 animate-fade-in">
         <div className="space-y-6 md:space-y-8">
           {/* Overline */}
           <div className="font-mono-techno text-xs md:text-sm tracking-[0.2em] uppercase text-muted-foreground">
